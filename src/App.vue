@@ -2,32 +2,51 @@
   
   <main>
     <div id="word">
-      <span class="letter">
-        <span>c</span>
-      </span>
-      <span class="letter">
-        <span>a</span>
-      </span>
-      <span class="letter">
-        <span>r</span>
+      <span v-for="i in state.wordSplitted" class="letter">
+        <span>{{ i }}</span>
       </span>
     </div>
 
-    <div id="input-letter">
-      <input type="text" maxlength="1">
+    <form @submit.prevent="sendLetter" id="input-letter">
+      <input type="text" maxlength="1" v-model="state.letter">
       <button>Enviar</button>
-    </div>
+    </form>
     
-    <div id="letters-left">
+    <!-- <div id="letters-left">
       <span>a</span>
       <span>b</span>
       <span>c</span>
-    </div>
+    </div> -->
   </main>
 
 </template>
 
 <script setup lang="ts">
+import { onMounted, reactive } from 'vue';
+const word = 'apito';
+
+let state = reactive({
+  letter: '' as string,
+  wordSplitted: [] as Array<string>,
+});
+
+onMounted(() => {
+  for (let i = 0; i < word.split('').length; i++) {
+    state.wordSplitted.push('');
+  }
+});
+
+const sendLetter = () => {
+  const wordSplitted = new String(word);
+  
+  for (let i = 0; i < wordSplitted.length; i++) {
+    if (state.letter === wordSplitted[i]) {
+      state.wordSplitted[i] = state.letter;
+    }
+  }
+
+  state.letter = '';
+}
 
 </script>
 
